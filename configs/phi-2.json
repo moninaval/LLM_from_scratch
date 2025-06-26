@@ -1,0 +1,35 @@
+{
+  "model_type": "phi-2",
+  "tokenizer_type": "huggingface",
+  "tokenizer_path": "microsoft/phi-2",
+  "vocab_size": 51200,
+  "max_position_embeddings": 2048,
+  "hidden_size": 2560,
+  "num_attention_heads": 32,
+  "num_hidden_layers": 32,
+  "intermediate_size": 10240,
+  "dropout": 0.0,
+  "layer_norm_epsilon": 1e-5,
+
+  "attention": {
+    "qkv_mode": "merged",
+    "rotary_embedding": true,
+    "use_bias": false
+  },
+
+  "ffn": {
+    "type": "standard",
+    "activation": "gelu"
+  },
+
+  "norm": {
+    "style": "pre"
+  },
+
+  "initializer_range": 0.02,
+  "tie_word_embeddings": true,
+  "use_flash_attention": false,
+
+  "tokenizer_path": "microsoft/phi-2",
+  "weights_path": "./pretrained/phi-2/pytorch_model.bin"
+}
