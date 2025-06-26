@@ -1,0 +1,145 @@
+# 🧾 GLOBAL.JSON Configuration Tutorial for Modular LLM
+
+This document explains the purpose and usage of each field in the `global.json` configuration file used in the Modular LLM project. This config file governs **runtime behavior**, such as inference settings, logging, and sampling strategy.
+
+---
+
+## 📁 File Location
+
+```
+modular_llm/
+├── configs/
+│   └── global.json
+```
+
+---
+
+## 🔧 Purpose
+
+The `global.json` config holds all **non-architecture-specific** runtime settings, such as:
+
+* Inference mode
+* Device preference (CPU/GPU)
+* Logging verbosity
+* Output generation settings
+* Seed for reproducibility
+
+---
+
+## 📜 Field Descriptions
+
+### 🔄 Runtime Mode
+
+```json
+"mode": "inference"
+```
+
+* Options: `"train"`, `"eval"`, `"inference"`
+* Controls how the runner script behaves.
+
+---
+
+### ⚙️ Hardware & Precision
+
+```json
+"use_cuda": true,
+"use_mixed_precision": false
+```
+
+* `use_cuda`: Set to `true` to use GPU (if available).
+* `use_mixed_precision`: Use FP16 for inference/training if GPU supports it.
+
+  * Ignored when `use_cuda` is `false`.
+
+---
+
+### 🪵 Logging & Debugging
+
+```json
+"log_level": "debug",
+"log_interval": 10,
+"tensorboard_enabled": true
+```
+
+* `log_level`: Set verbosity level (`debug`, `info`, `warning`, `error`).
+* `log_interval`: Log progress every N steps.
+* `tensorboard_enabled`: Enable logging to TensorBoard.
+
+---
+
+### 🎲 Reproducibility
+
+```json
+"random_seed": 42
+```
+
+* Fixes random seed for deterministic behavior across runs.
+
+---
+
+### 📤 Inference Parameters
+
+```json
+"max_new_tokens": 128,
+"context_truncate_strategy": "left"
+```
+
+* `max_new_tokens`: Maximum tokens the model is allowed to generate.
+* `context_truncate_strategy`: When input exceeds context length, trim from:
+
+  * `"left"`: cut older tokens first
+  * `"right"`: cut newer tokens
+  * `"middle"`: preserve head and tail, trim center
+
+---
+
+### 💾 Output & Saving
+
+```json
+"save_dir": "./checkpoints/"
+```
+
+* Where to save model checkpoints, logs, and TensorBoard runs.
+
+---
+
+### 🎯 Sampling Strategy (Inference)
+
+```json
+"temperature": 1.0,
+"top_k": 50,
+"top_p": 0.95,
+"early_stopping": true,
+"eos_token_id": null
+```
+
+* `temperature`: Lower → more deterministic output
+* `top_k`: Only sample from top-K tokens
+* `top_p`: Nucleus sampling — sample from top tokens with cumulative probability ≥ P
+* `early_stopping`: Stop on end-of-sequence (EOS) token
+* `eos_token_id`: Override EOS token if your tokenizer doesn’t define one
+
+---
+
+## ✅ Best Practices
+
+* Keep a `global.jsonc` version with comments for development
+* Use a clean `global.json` version for runtime
+* Validate the config file with schema before use (optional but recommended)
+
+---
+
+## 🔄 Related Files
+
+* `phi-2.json`, `gpt2.json`, etc. → Hold model-specific config like tokenizer path, architecture, weights
+* `main.py` or `runner.py` → Main script that loads and uses both configs
+
+---
+
+## 📞 Need Help?
+
+If you're unsure about any value in `global.json`, refer to this tutorial or open an issue in the repository.
+
+🚀
+
+  

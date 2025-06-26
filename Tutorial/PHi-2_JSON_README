@@ -1,0 +1,171 @@
+# 📘 PHI-2.JSON Configuration Tutorial for Modular LLM
+
+This document explains the structure and usage of the `phi-2.json` configuration file in your Modular LLM system. This file defines the **architecture and weight-related** settings specific to the Phi-2 model.
+
+---
+
+## 📁 File Location
+
+```
+modular_llm/
+├── configs/
+│   └── phi-2.json
+```
+
+---
+
+## 🔧 Purpose
+
+The `phi-2.json` config contains all the details required to:
+
+* Construct the model architecture
+* Load pretrained Phi-2 weights
+* Use the correct tokenizer
+* Maintain compatibility with the original Phi-2 training setup
+
+---
+
+## 📜 Field Descriptions
+
+### 🧠 Identity
+
+```json
+"model_type": "phi-2"
+```
+
+* Used to route to the correct model loader or block definitions
+* Also used to identify the model during logging
+
+---
+
+### 🔢 Vocabulary and Sequence
+
+```json
+"vocab_size": 51200,
+"max_position_embeddings": 2048
+```
+
+* `vocab_size`: Number of unique tokens (must match tokenizer)
+* `max_position_embeddings`: Maximum sequence length (context window)
+
+---
+
+### 🏗️ Core Transformer Dimensions
+
+```json
+"hidden_size": 2560,
+"num_attention_heads": 32,
+"num_hidden_layers": 32,
+"intermediate_size": 10240,
+"dropout": 0.0,
+"layer_norm_epsilon": 1e-5
+```
+
+* `hidden_size`: Size of the model embeddings
+* `num_attention_heads`: Number of attention heads per layer
+* `num_hidden_layers`: Total transformer blocks
+* `intermediate_size`: FFN hidden size (usually 4x or more of `hidden_size`)
+* `dropout`: Dropout used in training (0.0 for inference)
+* `layer_norm_epsilon`: Epsilon value for numerical stability in LayerNorm
+
+---
+
+### 👁️ Attention Configuration
+
+```json
+"attention": {
+  "qkv_mode": "merged",
+  "rotary_embedding": true,
+  "use_bias": false
+}
+```
+
+* `qkv_mode`: "merged" = single Linear layer for Q, K, V (Phi-2 uses this)
+* `rotary_embedding`: `true` means use RoPE for position info
+* `use_bias`: Whether attention projections use bias terms
+
+---
+
+### 🧮 Feed Forward Network
+
+```json
+"ffn": {
+  "type": "standard",
+  "activation": "gelu"
+}
+```
+
+* `type`: Type of FFN layer — `"standard"` = basic two-layer MLP
+* `activation`: Activation function used in the FFN (e.g., GELU)
+
+---
+
+### 🧼 Layer Normalization
+
+```json
+"norm": {
+  "style": "pre"
+}
+```
+
+* `style`: Where LayerNorm is applied relative to attention/FFN
+
+  * `"pre"` = before attention/FFN (used in Phi-2 and LLaMA)
+  * `"post"` = after (used in GPT-2)
+
+---
+
+### 🔧 Misc Model Settings
+
+```json
+"initializer_range": 0.02,
+"tie_word_embeddings": true,
+"use_flash_attention": false
+```
+
+* `initializer_range`: Range for random weight initialization (if not loading weights)
+* `tie_word_embeddings`: Share input and output projection weights (common in GPT-style models)
+* `use_flash_attention`: Whether to enable FlashAttention kernels (if supported)
+
+---
+
+### 📦 External Paths
+
+```json
+"tokenizer_path": "microsoft/phi-2",
+"weights_path": "./pretrained/phi-2/pytorch_model.bin"
+```
+
+* `tokenizer_path`: Can be a local path or HuggingFace model repo (used at runtime)
+* `weights_path`: Local path to the pretrained weight file compatible with Phi-2
+
+---
+
+## ✅ Best Practices
+
+* Keep this config in sync with the actual pretrained model and tokenizer
+* Do not modify architecture fields (like `hidden_size`) unless you’re training from scratch
+* If loading weights fails, verify `qkv_mode`, `norm.style`, and dimensions match original
+
+---
+
+## 🔄 Related Files
+
+* `global.json` → Holds system/runtime flags
+* `main.py` → Loads this config to instantiate the model architecture
+
+---
+
+## 🧠 Reminder
+
+This file is **model-specific**. You will have separate config files for:
+
+* `gpt2.json`
+* `llama.json`
+* `mistral.json`
+
+Each one will define its tokenizer, weights, and architecture.
+
+---
+
+Happy building! 🧱
