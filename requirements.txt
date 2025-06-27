@@ -1,0 +1,27 @@
+# Core ML/LLM Frameworks
+transformers==4.40.1
+sentencepiece==0.1.99
+torch>=2.0.0
+tokenizers>=0.15.0
+
+# Optional: for tiktoken-based models like GPT-2
+tiktoken>=0.5.1
+
+# For dataset preprocessing and environment handling
+numpy
+
+# Optional: for CLI logging, progress bars, training tools
+tqdm
+
+# For safe config parsing with comments (if using .jsonc)
+json5
+
+# Optional: for experimentation or custom training workflows
+matplotlib
+scikit-learn
+
+# Only if you're planning to train your own tokenizer
+# pip install tokenizers[sentencepiece]
+# or separately:
+# pip install tokenizers
+# pip install sentencepiece
