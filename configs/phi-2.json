@@ -1,35 +1,30 @@
 {
-  "model_type": "phi-2",
-  "tokenizer_type": "huggingface",
+  "model_name": "phi-2",
   "tokenizer_path": "microsoft/phi-2",
-  "vocab_size": 51200,
-  "max_position_embeddings": 2048,
+  "checkpoint_dir": "checkpoints/phi-2",
+
   "hidden_size": 2560,
-  "num_attention_heads": 32,
-  "num_hidden_layers": 32,
+  "num_heads": 32,
+  "num_layers": 32,
   "intermediate_size": 10240,
-  "dropout": 0.0,
-  "layer_norm_epsilon": 1e-5,
+  "max_position_embeddings": 2048,
+  "vocab_size": 50257,
 
-  "attention": {
-    "qkv_mode": "merged",
-    "rotary_embedding": true,
-    "use_bias": false
-  },
+  "use_rotary": true,
+  "rotary_dim": 64,
 
-  "ffn": {
-    "type": "standard",
-    "activation": "gelu"
-  },
+  "norm_type": "layernorm",
+  "ffn_type": "gelu",
+  "qkv_proj": "fused",
+  "tie_weights": true,
 
-  "norm": {
-    "style": "pre"
-  },
+  "dataset_class": "TextDataset",
+  "batch_size": 2,
+  "lr": 3e-4,
+  "epochs": 5,
+  "loss": "cross_entropy",
+  "resume_from": "",
 
-  "initializer_range": 0.02,
-  "tie_word_embeddings": true,
-  "use_flash_attention": false,
-
-  "tokenizer_path": "microsoft/phi-2",
-  "weights_path": "./pretrained/phi-2/pytorch_model.bin"
+  "device": "cuda",
+  "debug": false
 }
