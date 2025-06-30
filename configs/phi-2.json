@@ -1,6 +1,8 @@
 {
   "model_name": "phi-2",
+  "model_type": "decoder-only",
   "tokenizer_path": "microsoft/phi-2",
+  "tokenizer_type": "huggingface",
   "checkpoint_dir": "checkpoints/phi-2",
 
   "hidden_size": 2560,
@@ -19,6 +21,10 @@
   "tie_weights": true,
 
   "dataset_class": "TextDataset",
+  "data_path": "data/phi2_train.txt",
+  "output_path": "data/phi2_train.txt.cached.2048.jsonl",
+  "save_bin": true,
+
   "batch_size": 2,
   "lr": 3e-4,
   "epochs": 5,
