@@ -1,0 +1,27 @@
+{
+  "model_name": "mistral-7b",
+  "tokenizer_path": "mistralai/Mistral-7B-v0.1",
+  "tokenizer_type": "huggingface",
+  "checkpoint_dir": "checkpoints/mistral-7b",
+
+  "hidden_size": 4096,
+  "num_heads": 32,
+  "num_layers": 32,
+  "intermediate_size": 14336,
+  "max_position_embeddings": 8192,
+  "vocab_size": 32000,
+
+  "use_rotary": true,
+  "rotary_dim": 128,
+  "norm_type": "rmsnorm",
+  "ffn_type": "silu",
+  "qkv_proj": "fused",
+  "tie_weights": true,
+
+  "batch_size": 1,
+  "lr": 2e-4,
+  "epochs": 1,
+  "loss": "cross_entropy",
+  "device": "cuda",
+  "pretokenized": true
+}
