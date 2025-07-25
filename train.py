@@ -84,8 +84,8 @@ def main():
                 print(f"Step {step} - Loss: {loss.item():.4f}")
 
         avg_loss = total_loss / len(dataloader)
-        print(f"✅ Epoch {epoch + 1} complete. Avg Loss: {avg_loss:.4f}")
-
+        perplexity = torch.exp(torch.tensor(avg_loss))
+        print(f"✅ Epoch {epoch+1} Summary → Avg Loss: {avg_loss:.4f} | Perplexity: {perplexity.item():.2f}")
         # Save model checkpoint
         ckpt_path = os.path.join(checkpoint_dir, f"model_epoch{epoch}.pt")
         torch.save(model.state_dict(), ckpt_path)
