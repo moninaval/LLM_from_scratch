@@ -1,9 +1,14 @@
 {
   "model_name": "phi-2",
   "model_type": "decoder-only",
+
   "tokenizer_path": "microsoft/phi-2",
   "tokenizer_type": "huggingface",
+
   "checkpoint_dir": "checkpoints/phi-2",
+  "out_dir": "checkpoints/phi-2",
+  "device": "cuda",
+  "seed": 42,
 
   "hidden_size": 2560,
   "num_heads": 32,
@@ -11,26 +16,36 @@
   "intermediate_size": 10240,
   "max_position_embeddings": 2048,
   "vocab_size": 50257,
-
   "use_rotary": true,
   "rotary_dim": 64,
-
   "norm_type": "layernorm",
   "ffn_type": "gelu",
   "qkv_proj": "fused",
   "tie_weights": true,
 
-  "dataset_class": "TextDataset",
-  "data_path": "data/phi2_train.txt",
-  "output_path": "data/phi2_train.txt.cached.2048.jsonl",
-  "save_bin": true,
+  "data_path": "data/corpus_seq2048.bin",
+  "val_path": null,
+  "jsonl_key": "input_ids",
 
-  "batch_size": 2,
-  "lr": 3e-4,
-  "epochs": 5,
-  "loss": "cross_entropy",
-  "resume_from": "",
+  "batch_size": 4,
+  "grad_accum": 1,
+  "amp": true,
+  "clip_grad": 1.0,
+  "weight_decay": 0.1,
 
-  "device": "cuda",
-  "debug": false
+  "lr": 3e-5,
+  "warmup_ratio": 0.02,
+  "min_lr_ratio": 0.1,
+  "schedule": "cosine",
+
+  "total_step_budget": 0,
+  "epochs": 1,
+  "steps_today": 0,
+
+  "eval_every": 0,
+  "eval_batch_size": 4,
+  "log_every": 100,
+  "save_every": 1000,
+
+  "resume_from": ""
 }
