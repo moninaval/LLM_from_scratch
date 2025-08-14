@@ -1,50 +1,113 @@
-Folder Structure
-ALLLLM/
-|- configs/ -> Model configs (e.g. phi-2.json, my-llm.json)
-|- data/ -> Raw .txt files and generated .jsonl/.bin tokenized datasets
-|- scripts/
-| |- train_tokenizer.py -> Trains custom tokenizer (BPE)
-| |- tokenize_dataset.py -> Tokenizes corpus using existing tokenizer
-|- train.py -> Trains the LLM using tokenized files
-|- checkpoints/ -> Stores model checkpoints and seen_datasets.json
-|- src/
-| |- model/ -> Model components (attention, FFN, etc.)
-| |- tokenizer/ -> TokenizerManager abstraction (HF, tiktoken, custom)
-| |- data/ -> TextDataset class for .jsonl/.bin loading
-Step 1: Tokenization
-$ python scripts/tokenize_dataset.py --model phi-2
-- Reads raw text from path in phi-2.json (or my-llm.json)
-- Tokenizes using the specified tokenizer (Huggingface or custom BPE)
-- Saves output as: data/<basename>.cached.<seq_len>.<timestamp>.jsonl
-- Optionally also saves .bin and .meta.json
-Step 2: Training
-$ python train.py --model phi-2 --only_new
-- Scans all .jsonl and .bin files in the data/ directory
-- Ignores files already listed in checkpoints/phi-2/seen_datasets.json
-- Trains on only new files (incremental training)
-- Saves model checkpoints (e.g. model_epoch0.pt)
-- Updates seen_datasets.json with newly trained files
-Dataset Tracking
-checkpoints/phi-2/seen_datasets.json
-- Stores a list of .jsonl files that have already been used for training
-- Ensures files are not used more than once
-- Keeps training safe and incremental
-- Automatically updated after every training run
-Tokenizer vs Dataset Tokenization (Custom LLM)
-Tokenizer Training (tokenizer.json):
-- Should be done only once, ideally on the largest dataset.
-- Output: tokenizer.json (fixed vocabulary and merge rules).
-- Overwriting tokenizer.json will invalidate previous .jsonl files.
-Dataset Tokenization (jsonl/bin):
-- Can be done repeatedly for new data using tokenize_dataset.py.
-- Generates new .jsonl files with timestamps.
-- Always uses the fixed tokenizer.json (never modifies vocabulary).
-Correct Workflow for Custom LLM
-1. Train tokenizer on large dataset:
-$ python scripts/train_tokenizer.py --model my-llm
-2. Tokenize raw text anytime:
-$ python scripts/tokenize_dataset.py --model my-llm
-3. Train model incrementally:
-$ python train.py --model my-llm --only_new
-Reminder:
-Do not retrain tokenizer on small corpora later always reuse the original.
+# LLM Training Pipeline
+
+This repository contains scripts and configurations for **training a Large Language Model (LLM)** with a resumable, step-based approach. It includes tools to prepare datasets, tokenize text, and run training in a flexible, GPU-availability-friendly manner.
+
+---
+
+## Overview of Workflow
+
+1. **Prepare your raw dataset**  
+   - This can be plain text, instruction-style JSONL (like Alpaca), or chat-formatted templates.
+   - If your dataset is JSONL (e.g., instruction format), you may need to render it into plain text before tokenization.
+
+2. **Tokenize your dataset**  
+   - Uses your chosen tokenizer (HuggingFace or custom BPE) to convert raw text into token IDs.
+   - Stores results in `.jsonl` or `.bin` format for efficient training.
+
+3. **Train the model**  
+   - Loads the tokenized dataset and trains the model.
+   - Supports **step-based continuation** so you can train for a fixed number of steps per session (e.g., 5 hours GPU time) and resume later.
+
+---
+
+## Configuration
+
+All settings are in `configs/{model_name}.json`.  
+Key fields:
+
+| Field | Description |
+|-------|-------------|
+| `model_name` | Identifier for your model (e.g., `phi-2`). |
+| `tokenizer_path` | Path to existing tokenizer or pretrained model's tokenizer. |
+| `tokenizer_type` | `huggingface` or `bpe` for custom tokenizers. |
+| `data_path` | Path to **raw dataset** (before tokenization). |
+| `save_bin` | `true` to store tokenized data in `.bin` format for speed. |
+| `batch_size` | Number of sequences per batch. |
+| `lr` | Base learning rate. |
+| `epochs` | Used if `total_step_budget` is 0. |
+| `total_step_budget` | Total training steps to run (overrides `epochs`). |
+| `grad_accum` | Gradient accumulation steps. |
+| `save_every` | Save checkpoint every N steps. |
+| `eval_every` | Evaluate every N steps. |
+| `checkpoint_dir` | Directory for checkpoints. |
+| `out_dir` | Directory for logs/outputs. |
+
+---
+
+## Script 1: Tokenize Dataset
+
+**File:** `scripts/tokenize_dataset.py`  
+**Purpose:** Takes your raw dataset and converts it into `.jsonl` or `.bin` format for training.
+
+**Run:**
+```bash
+# Example for HuggingFace tokenizer
+python scripts/tokenize_dataset.py --model phi-2
+
+# Example for custom tokenizer
+python scripts/tokenize_dataset.py --model my-llm
+```
+
+**Notes:**
+- Input path is set in `configs/{model}.json` → `data_path`.
+- Tokenizer is loaded from `tokenizer_path`.
+- Output file will be auto-named like:  
+  `data/{basename}.cached.{seq_len}.{timestamp}.jsonl`
+- If `save_bin` is `true`, a `.bin` file is also created.
+
+---
+
+## Script 2: Train Model
+
+**File:** `train.py`  
+**Purpose:** Trains the model on the tokenized dataset.
+
+**Run:**
+```bash
+# Train using epoch-based loop (total_step_budget=0)
+python train.py --model phi-2
+
+# Train using step-based budget (for limited daily GPU time)
+python train.py --model phi-2 --steps_today 1000
+```
+
+**Step-based Training Workflow:**
+1. Set `total_step_budget` in config to desired global steps.
+2. Each day, run training with `--steps_today N` based on available GPU hours.
+3. The trainer resumes from the last checkpoint automatically.
+
+---
+
+## Typical End-to-End Example
+
+```bash
+# 1. Tokenize raw dataset
+python scripts/tokenize_dataset.py --model phi-2
+
+# 2. Train model for 1500 steps today
+python train.py --model phi-2 --steps_today 1500
+
+# 3. Next day, resume for another 2000 steps
+python train.py --model phi-2 --steps_today 2000
+```
+
+---
+
+## Best Practices
+
+- **Shuffle dataset** during training for better generalization.
+- **Save checkpoints** regularly (`save_every`) to prevent loss on GPU failures.
+- **Use cosine LR schedule** for smoother convergence.
+- Keep a **separate validation dataset** if possible.
+
+---
