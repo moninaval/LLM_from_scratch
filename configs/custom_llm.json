@@ -1,33 +1,52 @@
 {
-  "model_name": "my-llm",
+  "model_name": "toy-educ",
+  "model_type": "decoder-only",
 
-  "data_path": "data/my_corpus.txt",             
-  "tokenizer_path": "tokenizers/my-llm-tokenizer",
-  "tokenizer_type": "custom",
+  "tokenizer_path": "microsoft/phi-2",
+  "tokenizer_type": "huggingface",
 
-  "checkpoint_dir": "checkpoints/my-llm",
+  "checkpoint_dir": "checkpoints/toy-educ",
+  "out_dir": "checkpoints/toy-educ",
+  "device": "cuda",
+  "seed": 42,
 
-  "vocab_size": 30000,
-  "max_position_embeddings": 1024,
-
-  "hidden_size": 768,
-  "num_heads": 12,
-  "num_layers": 12,
-  "intermediate_size": 3072,
-  "vocab_size": 30000,
-
-  "use_rotary": false,
+  "hidden_size": 256,
+  "num_heads": 8,
+  "num_layers": 4,
+  "intermediate_size": 1024,
+  "max_position_embeddings": 128,
+  "vocab_size": 50257,
+  "use_rotary": true,
+  "rotary_dim": 32,
   "norm_type": "layernorm",
   "ffn_type": "gelu",
-  "qkv_proj": "split",
+  "qkv_proj": "fused",
   "tie_weights": true,
 
-  "batch_size": 4,
-  "lr": 3e-4,
-  "epochs": 5,
-  "loss": "cross_entropy",
-  "device": "cuda",
+  "data_path": "data/tiny_seq128.train.bin",
+  "val_path": "data/tiny_seq128.val.bin",
+  "jsonl_key": "input_ids",
 
-  "pretokenized": false,
-  "save_bin": true
+  "batch_size": 2,
+  "grad_accum": 1,
+  "amp": true,
+  "clip_grad": 1.0,
+  "weight_decay": 0.0,
+
+  "lr": 3e-4,
+  "schedule": "constant",
+  "warmup_ratio": 0.0,
+  "min_lr_ratio": 1.0,
+
+  "total_step_budget": 200,
+  "epochs": 1,
+  "steps_today": 0,
+
+  "eval_every": 10,
+  "eval_batch_size": 2,
+  "log_every": 1,
+  "save_every": 25,
+
+  "resume_from": ""
 }
+
