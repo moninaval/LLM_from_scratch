@@ -8,7 +8,7 @@ import torch
 from torch.utils.data import DataLoader, Dataset
 from torch.cuda.amp import autocast, GradScaler
 from torch.nn.utils import clip_grad_norm_
-
+from inspect import signature
 # --------------------------- Optional dataset helpers ---------------------------
 
 # Minimal BinDataset (uint16, shape: (N, seq_len)) — only used if you pass a .bin
@@ -272,7 +272,11 @@ def main():
         raise ValueError("steps_per_epoch computed as 0 — increase dataset size or lower batch_size.")
 
     # ----------------- Model / Optimizer -----------------
-    model = LLMModel(**config).to(device)
+    model_sig = signature(LLMModel.__init__)
+    allowed = set(model_sig.parameters.keys()) - {"self"}
+    model_cfg = {k: v for k, v in config.items() if k in allowed}
+
+    model = LLMModel(**model_cfg).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=float(config.get("lr", 3e-5)), weight_decay=weight_decay)
 
     # ----------------- Step budgets & LR schedule -----------------

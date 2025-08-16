@@ -1,0 +1,85 @@
+Title: Counting Apples
+I had one apple. Then I bought two more. Now I have three apples. 1 + 2 = 3.
+Question: How many apples will I have if I eat one?
+Answer: Two.
+
+Title: Mini Story – The Wandering Kite
+A red kite drifted above the beach. The wind changed, and it danced left, then right.
+A kid let out more string and laughed. The kite climbed higher, bright against the sky.
+
+Title: Simple Python
+def add(a, b):
+    return a + b
+
+print(add(2, 5))  # 7
+
+Title: Units
+1 kilometer = 1000 meters.
+1 meter = 100 centimeters.
+Therefore, 1 kilometer = 100000 centimeters.
+
+Title: Dialogue
+A: Are we there yet?
+B: Almost. Two more stops.
+A: Good, I’m hungry.
+B: We’ll eat noodles when we arrive.
+
+Title: JSON Example
+{"user":"naval","active":true,"projects":["llm","viz"],"score":42}
+
+Title: URL and Email
+Docs at https://example.com/guide.
+Contact: hello@example.com
+
+Title: Hindi Phrase
+Namaste! Mera naam Aarav hai. Main AI seekh raha hoon.
+iThe ancient art of bonsai is not about dwarfing a tree; it is about creating a miniature, living masterpiece. A single tree can represent a vast forest or a towering mountain. The practice requires immense patience and an understanding of horticultural principles. A well-pruned specimen can live for centuries, passed down through generations.
+
+In the late 19th century, a new genre of literature emerged. Known as detective fiction, it captivated readers with its intricate plots and brilliant, eccentric protagonists. Arthur Conan Doyle's Sherlock Holmes and Agatha Christie's Hercule Poirot are arguably the most famous examples. They set the standard for a genre that continues to thrive.
+
+The capital city of France is Paris. It is home to the Eiffel Tower, the Louvre Museum, and Notre-Dame Cathedral. The city's official motto is "Fluctuat nec mergitur," which means "Tossed but not sunk." It's a testament to the city's resilience throughout history.
+
+"I can't believe it's already November," she sighed, looking out the window at the falling leaves. "It feels like summer was just yesterday." He nodded in agreement, stirring his coffee. "Time really does fly when you're busy."
+
+Here is a simple Python script:
+
+Python
+
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        print(a, end=' ')
+        a, b = b, a + b
+
+fibonacci(10)
+The solar system consists of eight planets, which orbit the sun. Mercury is the closest, and Neptune is the farthest. Earth is the only known planet to harbor life. Scientists are constantly searching for exoplanets that might also be habitable. The search for extraterrestrial life is one of the most exciting fields in modern astronomy.
+
+A recipe for classic chocolate chip cookies:
+
+Preheat oven to 375°F (190°C).
+
+Cream together butter, sugar, and brown sugar.
+
+Beat in eggs and vanilla extract.
+
+In a separate bowl, whisk flour, baking soda, and salt.
+
+Slowly add dry ingredients to wet ingredients.
+
+Stir in chocolate chips.
+
+Drop spoonfuls onto a baking sheet.
+
+Bake for 10-12 minutes.
+
+The history of rock music is a complex tapestry of influences, from blues and gospel to folk and country. Early pioneers like Elvis Presley and Chuck Berry laid the foundation. The Beatles and The Rolling Stones took it to a global scale. In the 1970s, genres like punk and heavy metal emerged, each adding their own unique flavor. Today, rock continues to evolve.
+
+"Did you see the new movie? I heard it's fantastic!" a friend messaged me. "No, not yet," I replied, "but it's on my list." We agreed to go see it next weekend. The conversation then shifted to our plans for the upcoming holiday.
+
+A brief summary of photosynthesis:
+Photosynthesis is the process used by plants, algae, and some bacteria to convert light energy into chemical energy. This chemical energy is stored in carbohydrate molecules, such as sugars, which are synthesized from carbon dioxide and water. The process is essential for life on Earth.
+
+The economic theory of supply and demand describes how prices are determined in a market. When supply exceeds demand, prices tend to fall. Conversely, when demand exceeds supply, prices tend to rise. It's a fundamental concept in macroeconomics.
+
+A discussion about artificial intelligence:
+AI has advanced rapidly in recent years, with large language models like GPT and others demonstrating impressive capabilities. However, concerns about bias, ethical implications, and job displacement remain. The future of AI is a topic of intense debate among researchers and the general public. We must ensure that these powerful tools are developed responsibly.

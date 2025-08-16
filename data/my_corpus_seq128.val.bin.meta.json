@@ -1,0 +1,13 @@
+{
+  "tokenizer_path": "microsoft/phi-2",
+  "tokenizer_type": "huggingface",
+  "seq_len": 128,
+  "vocab_size": 51200,
+  "pre_shuffled": true,
+  "shuffle_seed": 42,
+  "val_ratio": 0.05,
+  "n_sequences": 1,
+  "dtype": "uint16",
+  "output_file": "data/my_corpus_seq128.val.bin",
+  "created_at": "2025-08-16T14:31:36"
+}

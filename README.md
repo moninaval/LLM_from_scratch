@@ -52,8 +52,12 @@ Key fields:
 **Run:**
 ```bash
 # Example for HuggingFace tokenizer
-python scripts/tokenize_dataset.py --model phi-2
-
+python scripts/tokenize_dataset.py \
+  --model my_model \
+  --val_ratio 0.01 \
+  --shuffle \
+  --seed 42 \
+  --emit_jsonl
 # Example for custom tokenizer
 python scripts/tokenize_dataset.py --model my-llm
 ```

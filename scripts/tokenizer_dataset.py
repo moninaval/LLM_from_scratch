@@ -83,7 +83,7 @@ def main():
         config = json.load(f)
 
     # Resolve paths and knobs
-    raw_path = config.get("raw_data_path", None) or config.get("data_path")
+    raw_path = config.get("raw_data_path", None) 
     if not raw_path:
         raise ValueError("Config must include 'data_path' (raw text) or 'raw_data_path'.")
 
